@@ -1,0 +1,152 @@
+@charset "UTF-8";
+*{
+	margin: 0;
+	padding:0;
+}
+a:link{
+	color : black;
+	text-decoration: none;
+}
+a:visited{
+	color : black;
+	text-decoration: none;
+}
+
+/* 화면 전체 렙 */
+.wrapper{
+	width: 100%;	
+}
+
+/* content 랩 */
+.wrap{
+	width : 800px;
+	margin: auto;
+	transform:translateY(100px) translateX(0px);	
+}
+
+/* 페이지 로고 */
+.logo_wrap{
+	text-align: center;	
+	margin: 50px 0;	
+}
+.logo_wrap>span{
+	font-size : 50px;
+	font-weight: 900;
+}
+
+
+/* 로그인 area */
+.id_input_box{
+	border: 1px solid black;
+	border-radius : 10px;
+	height:31px;
+	padding: 10px 14px;	
+	display: block;
+	width : 80%;
+	margin : auto;
+	border-color : rgba(238, 229, 217);
+}
+.id_input{
+	width:95%;
+	height:100%;
+	border:none;
+	font-size:28px;
+	transform:translateY(2px) translateX(10px);
+}
+.id_input:focus{
+	background-color : #FDF5E6;
+	outline: none;
+}
+
+
+.pw_wrap{
+	margin-top: 40px;
+}
+.pw_input_box{
+	border: 1px solid black;
+	border-radius : 10px;
+	height:31px;
+	padding: 10px 14px;	
+	display: block;
+	width : 80%;
+	margin : auto;
+	border-color : rgba(238, 229, 217);
+}
+.pw_input{
+	width:95%;
+	height:100%;
+	border:none;
+	font-size:28px;
+	transform:translateY(2px) translateX(10px);
+}
+.pw_input:focus{
+	background-color : #FDF5E6;
+	outline: none;
+}
+
+.login_button_wrap{
+	margin-top: 40px;
+	text-align: center;
+}
+.login_button{
+	width: 80%;
+    height: 80px;
+    background-color: rgba(238, 229, 217);
+    font-size: 40px;
+    font-weight: 900;
+    color: black;
+    margin : auto;
+    border : none;
+    border-radius : 10px;
+}
+.login_button:hover{
+	background-color: rgb(142,129,113);
+	color: white;
+	cursor:pointer;
+}
+
+.a_search{
+	margin-top: 10px;
+	text-align: center;
+	text-decoration-line: none;
+	
+}
+.space{
+	margin-top: 40px;
+}
+/* 로그인 실패시 경고글 */
+.login_warn{
+	margin-top: 30px;
+	text-align: center;
+	color : red;
+}
+
+/* 로그인 성공 영역 */
+.login_success_area{
+	height: 62%;
+	width: 80%;
+	border: 2px solid #7474ad;
+	margin: 5% auto;
+	padding-top: 5%;
+}
+.login_success_area>span{
+	display : block;
+	text-align: left;
+	margin-left: 10%;
+}
+.login_success_area>a{
+	font-size: 15px;
+	font-weight: 900;
+	display: inline-block;
+	margin-top: 5px;
+	background: #e1e5e8;
+	width: 82px;
+	height: 22px;
+	line-height: 22px;
+	border-radius: 25px;
+	color: #606267;
+}
+/* float 속성 해제 */
+.clearfix{
+	clear: both;
+}

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.MemberMapper">
+	
+	<insert id="memberJoin">
+		insert into
+		 	zero_member
+		values(#{memberId}, #{memberPw}, #{memberName},
+		 		#{memberMail}, #{memberAddr1}, #{memberAddr2},
+		 		#{memberAddr3}, 0, sysdate, 100000, 5000, #{memberTel},'')
+	</insert>
+	
+	<select id="idCheck" resultType="int">
+		select count(*)
+		from zero_member
+		where
+		memberId = #{memberId}
+	</select>
+	
+	<select id="memberLogin" resultType="org.zerock.domain.MemberVO">
+		select
+		memberId, memberPw, memberName, adminck, money, point,memberTel, memberMail, memberAddr1,
+		 memberAddr2, memberAddr3
+		from zero_member
+		where memberId = #{memberId}
+		<!-- select
+		memberId, memberName, adminck, money, point from zero_member
+		where memberId = #{memberId}
+		and
+		memberPw = #{memberPw} -->
+	</select>
+	
+	<select id="memberIdSearch" parameterType="org.zerock.domain.MemberVO" resultType="org.zerock.domain.MemberVO">
+	<![CDATA[
+		select
+		*
+		from
+			zero_member
+		where
+			memberName = #{memberName, jdbcType=VARCHAR}
+		and
+			memberTel = #{memberTel, jdbcType=VARCHAR}
+	]]>
+	</select>
+	
+	<select id="memberPwdCheck" parameterType="org.zerock.domain.MemberVO" resultType="java.lang.Integer">
+	<![CDATA[
+    	select
+        	count(*)
+    	from
+        	zero_member
+    	where
+        	memberName = #{memberName}
+    	and
+        	memberTel = #{memberTel}
+    	and
+        	memberId = #{memberId}
+	]]>    
+	</select>
+ 
+    
+	<update id="passwordUpdate" parameterType="org.zerock.domain.MemberVO" >
+    	UPDATE 
+        	zero_member 
+    	SET 
+        	memberPw = #{memberPw}
+    	where
+        	memberName = #{memberName}
+    	and
+        	memberTel = #{memberTel}
+    	and
+        	memberId = #{memberId}
+	</update>
+	
+	<select id="getMemberInfo" resultType="org.zerock.domain.MemberVO">
+		select
+			memberId, memberName, memberMail, memberAddr1, memberAddr2, memberAddr3, money, point
+		from
+			zero_member
+		where
+			memberId = #{memberId}
+	</select>
+	
+	<!-- 네이버전용 회원가입 -->
+	<insert id="insertN">
+		insert into
+		 	zero_member
+		values(#{memberId}, #{memberPw}, #{memberName},
+		 		#{memberMail}, #{memberAddr1}, #{memberAddr2},
+		 		#{memberAddr3}, 0, sysdate, 100000, 5000, #{memberTel}, #{naverLogin})
+	</insert>
+	
+	<!-- 네이버 연동 여부 -->
+	<select id="naverChk" resultType="org.zerock.domain.MemberVO">
+		select
+			memberId, memberMail, naverLogin, memberName, adminck, money, point
+		from
+			zero_member
+		where 
+			naverLogin = #{naverLogin} or memberMail =#{memberMail}
+		
+	</select>
+	
+	<!-- 네이버 연동 회원으로 정보 수정 -->
+	<update id="updateN">
+		update zero_member
+		set naverLogin = #{naverLogin}
+		where memberMail = #{memberMail}
+	</update>
+	
+	<!-- 회원정보 수정 -->
+	<update id = "updateMembers" parameterType="org.zerock.domain.MemberVO">
+		update zero_member
+		set memberPw = #{memberPw}, memberName=#{memberName}, 
+		memberMail=#{memberMail}, memberAddr1 = #{memberAddr1}, 
+		memberAddr2 = #{memberAddr2}, memberAddr3 = #{memberAddr3},
+		memberTel = #{memberTel}
+		where memberId = #{memberId}
+	</update>
+
+</mapper>

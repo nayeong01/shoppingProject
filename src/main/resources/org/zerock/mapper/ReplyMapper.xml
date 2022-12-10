@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.ReplyMapper">
+
+	<!-- 평점 평균 구하기 -->
+	<select id ="getRatingAverage" resultType="double">
+		select avg(rating)
+		from zero_reply
+		where goodsId = #{goodsId}
+	</select>
+	
+	<!-- 평점 평균 반영하기 -->
+	<update id="updateRating">
+		update zero_goods
+		set ratingAvg = #{ratingAvg}
+		where goodsCode = #{goodsCode}
+	</update>
+	
+	<!-- 댓글 등록 -->
+	<insert id="enrollReply">
+		insert into zero_reply(replyId, goodsId, memberId, content, rating)
+		values(reply_seq.nextval, #{goodsId}, #{memberId}, #{content}, #{rating})
+		
+		<selectKey resultType ="int" keyProperty="replyId" order= "AFTER">
+		
+			SELECT reply_seq.currval as cartId from dual
+		
+		</selectKey>
+	</insert>	
+	
+	<select id="checkReply" resultType="integer">
+		select replyId from zero_reply
+		where memberId = #{memberId} and goodsId = #{goodsId}
+	</select>
+	
+	<!-- 댓글 페이징 -->
+  	<select id="getReplyList" resultType="org.zerock.domain.ReplyDTO">
+  		<![CDATA[
+		select * from(  		
+			select rownum as rn, replyId, goodsId, memberId, content, rating, regDate
+			from zero_reply
+			where rownum <= #{pageNum} * #{amount}  and goodsId = #{goodsId}	
+			order by regDate desc  	
+  			)
+  		where rn > (#{pageNum} -1) * #{amount}
+  		]]>
+  	</select>
+  	
+  	<select id="getReplyTotal" resultType="int">
+  	
+  		select count(*)
+  		from zero_reply
+  		where goodsId = #{goodsId}
+  	
+  	</select>
+  	
+  	<!-- 댓글수정 -->
+  	<update id="updateReply">
+  		update zero_reply set content = #{content}, rating = #{rating}
+  		where replyId = #{replyId}
+  	</update>
+  	
+  	<!-- 댓글 한개 정보 -->
+  	<select id="getUpdateReply" resultType="org.zerock.domain.ReplyDTO">
+  		select * from zero_reply
+		where replyId = #{replyId}
+	</select>
+	
+	<!-- 댓글 삭제 -->
+  	<delete id="deleteReply">
+  	
+  		DELETE FROM zero_reply
+  		WHERE replyId = #{replyId}
+  		
+  	</delete>
+  	
+  	<!-- 댓글 삭제 -->
+  	<delete id="memberDelete">
+  	
+  		DELETE FROM zero_reply
+  		WHERE memberId = #{memberId}
+  		
+  	</delete>
+</mapper>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.AdminMapper">
+	
+	<!-- 상품 등록 -->
+	<insert id="goodsEnroll">
+		 
+		insert into zero_goods
+			(goodsCode, goodsName, goodsCate, goodsPrice, goodsStock, goodsDetail)
+		values
+			(board_seq.nextval, #{goodsName}, #{goodsCate}, #{goodsPrice}, #{goodsStock}, #{goodsDetail})
+			
+		<selectKey resultType ="int" keyProperty="goodsCode" order= "AFTER">
+		
+			SELECT board_seq.currval as goodsCode from dual
+		
+		</selectKey>
+			
+	</insert>
+	
+	<!-- 이미지 등록 -->
+	<insert id="imageEnroll">
+		insert into zero_image
+			(goodsCode, fileName, uploadPath, uuid)
+		values
+			(#{goodsCode}, #{fileName}, #{uploadPath}, #{uuid})
+	</insert>
+	
+	<!-- 카테고리 리스트 -->
+	<select id="cateList" resultType="org.zerock.domain.CateVO">
+		select * from zero_bcate order by cateCode
+	</select>
+	
+	<!-- 상품 리스트 -->
+	<select id = "goodsGetList" resultType = "org.zerock.domain.GoodsVO">
+		<![CDATA[
+		
+			select * from (
+				select /*+INDEX_DESC(zero_goods zero_goods_pk)*/ rownum as rn, goodsName, goodsCode, goodsStock,
+					goodsCate, goodsDate,
+					(select 
+						cateName
+					from
+						zero_bcate
+					where
+						zero_goods.goodsCate = zero_bcate.cateCode)
+				from
+					zero_goods
+				where
+		]]>
+		
+			<if test = "keyword != null">
+				goodsName like '%' || #{keyword} || '%' and
+			</if>
+			
+		<![CDATA[
+			rownum <= #{pageNum} * #{amount}
+			)
+			
+		where rn > (#{pageNum} -1) * #{amount}
+		]]>
+	</select>
+	
+	
+	<!-- 상품 총 개수 -->
+	<select id= "goodsGetTotal" resultType="int">
+		
+			select count(*) from zero_goods
+			
+			<if test="keyword != null">
+				where goodsName like '%' || #{keyword} || '%'
+			</if>
+	</select>
+	
+	<!-- 상품 조회 페이지 -->
+	<select id="goodsGetDetail" resultType="org.zerock.domain.GoodsVO">
+		
+		select 
+				goodsCode, goodsName, goodsCate, goodsPrice, goodsStock,
+				goodsDetail, goodsDate, goodsUpdateDate
+		from
+				zero_goods
+		where
+				goodsCode = #{goodsCode}
+				
+	</select>
+	
+	<!-- 상품 정보 수정 -->
+	<update id = "goodsModify">
+		update
+			zero_goods
+		set
+			goodsName=#{goodsName}, goodsCate = #{goodsCate}, goodsPrice = #{goodsPrice},
+			goodsStock = #{goodsStock}, goodsDetail = #{goodsDetail}
+		where
+			goodsCode = ${goodsCode}
+			
+	</update>
+	
+	<!-- 상품 정보 삭제 -->
+	<delete id="goodsDelete">
+	
+		delete from zero_goods where goodsCode = #{goodsCode}
+	
+	</delete>
+	
+	<!-- 지정 상품 이미지 전체 삭제 -->
+	<delete id="deleteImageAll">
+	
+		delete FROM zero_image where goodsCode = #{goodsCode}
+		
+	</delete>
+	
+	<!-- 어제자 날짜 이미지 리스트 -->
+	<select id="checkFileList" resultType = "org.zerock.domain.AttachImageVO">
+		select * from zero_image where uploadpath = to_char(sysdate-1, 'yyyy/mm/dd')
+	</select>
+	
+	<!-- 지정 상품 이미지 정보 얻기 -->
+	<select id="getAttachInfo" resultType="org.zerock.domain.AttachImageVO">
+		select * from zero_image where goodsCode = #{goodsCode}
+	</select>
+	
+	<!-- 주문 리스트 -->
+	<select id="getOrderList" resultType="org.zerock.domain.OrderDTO">
+		<![CDATA[
+		select * 
+		from (
+			select
+				rownum rn, orderId, memberId, orderstate, orderdate
+			from
+				zero_order
+			where
+			rownum <= #{pageNum} * #{amount}
+		]]>
+		<if test="keyword !=null">
+				and orderId like '%' || #{keyword} || '%'
+		</if>
+		<![CDATA[
+			order by orderdate desc
+			)
+			where rn > (#{pageNum} -1) * #{amount}
+		]]>
+	</select>
+	
+	<!-- 상품 총 갯수 -->
+	<select id = "getOrderTotal" resultType ="int">
+		select count(*) from zero_order
+		
+		<if test="keyword !=null">
+			where memberId like '%' || #{keyword} || '%'
+		</if>
+		
+	</select>
+	
+	<!-- 회원 리스트 -->
+	<select id="memberGetList" resultType="org.zerock.domain.OrderCancelDTO">
+		<![CDATA[
+		select * 
+		from (
+			select
+				rownum rn, memberId, memberName, point, money, regDate
+			from
+				zero_member
+			where
+			rownum <= #{pageNum} * #{amount}
+		]]>
+		<if test="keyword !=null">
+				and memberName like '%' || #{keyword} || '%'
+		</if>
+		<![CDATA[
+			order by regDate desc
+			)
+			where rn > (#{pageNum} -1) * #{amount}
+		]]>
+	</select>
+	
+	<!-- 회원 총 갯수 -->
+	<select id = "getMemberTotal" resultType ="int">
+		select count(*) from zero_member
+		
+		<if test="keyword !=null">
+			where memberId like '%' || #{keyword} || '%'
+		</if>
+		
+	</select>
+	
+	<!-- 회원 수정 페이지 -->
+	<select id="memberGetDetail" resultType="org.zerock.domain.OrderCancelDTO">
+		
+		select 
+				memberId, memberName, point, money
+		from
+				zero_member
+		where
+				memberId = #{memberId}
+				
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+	<update id = "memberModify">
+		update
+			zero_member
+		set
+			memberName = #{memberName}, point = #{point}, money = #{money}
+		where
+			memberId = #{memberId}
+			
+	</update>
+	
+	<!-- 회원 삭제 -->
+	<delete id= "memberDelete">	
+		delete from zero_member where memberId = #{memberId}
+	
+	</delete>
+  	
+  </mapper>

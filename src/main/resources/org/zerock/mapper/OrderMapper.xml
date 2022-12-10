@@ -1,0 +1,113 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.OrderMapper">
+
+	<!-- 주문 상품 정보 -->
+	<select id = "getGoodsInfo" resultType = "org.zerock.domain.OrderPageItemDTO">
+		
+		select
+			goodsCode, goodsName, goodsPrice
+		from
+			zero_goods
+		where
+			goodsCode = #{goodsCode}
+	</select>
+	
+	<select id ="getOrderInfo" resultType="org.zerock.domain.OrderItemDTO">
+		select
+			goodsCode, goodsPrice
+		from
+			zero_goods
+		where
+			goodsCode = #{goodsCode} 
+	</select>
+	
+	<insert id ="enrollOrder">
+		insert into zero_order
+		(orderId, addressee, memberId, memberAddr1, memberAddr2, memberAddr3, orderState, deliveryCost, usePoint)
+		values
+		(#{orderId}, #{addressee}, #{memberId}, #{memberAddr1}, #{memberAddr2}, #{memberAddr3}, '배송준비' , #{deliveryCost}, #{usePoint})
+		
+	</insert>
+	
+	<insert id="enrollOrderItem">
+		insert into zero_orderItem
+		(orderItemId, orderId, goodsCode, goodsCount, goodsPrice, savePoint)
+		values
+		(order_seq.nextval, #{orderId}, #{goodsCode}, #{goodsCount}, #{goodsPrice}, #{savePoint})
+		
+	</insert>
+	
+	<update id="deductMoney">
+		update
+			zero_member
+		set
+			money = #{money}, point=#{point}
+		where
+			memberId = #{memberId}
+	</update>
+	
+	<update id ="deductStock">
+		update
+			zero_goods
+		set
+			goodsStock = #{goodsStock}
+		where
+			goodsCode = #{goodsCode}
+	</update>
+	
+	<update id="orderCancel">
+		update
+			zero_order
+		set
+			orderState= '주문 취소'
+		where
+			orderId = #{orderId}
+	</update>
+	
+	<select id="getOrderItemInfo" resultType="org.zerock.domain.OrderItemDTO">
+		select * from
+			zero_orderItem
+		where
+			orderId = #{orderId}
+	</select>
+	
+	<select id="getOrder" resultType="org.zerock.domain.OrderDTO">
+		select * from
+			zero_order
+		where
+			orderId = #{orderId}
+		
+	</select>
+	
+	<select id="getOrderList" resultType="org.zerock.domain.OrderDTO">
+		select * from
+			zero_order
+		where
+			memberId = #{memberId}
+		order by
+			orderDate desc
+	</select>
+	
+	<!-- 특정 주문 목록 -->
+	<select id="orderView" resultType="org.zerock.domain.OrderListDTO">
+		select
+			o.orderId, o.addressee, o.memberAddr1, o.memberAddr2, o.memberAddr3,
+			i.goodsCode, i.goodsCount, g.goodsName, g.goodsPrice, i.orderItemId, m.memberTel 
+		from zero_order o
+			inner join zero_orderItem i on i.orderId = o.orderId
+			inner join zero_goods g on i.goodsCode = g.goodsCode
+			inner join zero_member m on o.memberId = m.memberId
+		where o.memberId = #{memberId} and o.orderId=#{orderId}
+	</select>
+	
+	<!-- 주문 삭제 -->
+	<delete id= "memberDelete">	
+		delete from zero_order where memberId = #{memberId}
+	</delete>
+	
+	<!-- 주문 삭제 -->
+	<delete id= "orderListDelete">	
+		delete from zero_orderItem where orderId = #{orderId}
+	</delete>
+</mapper>
