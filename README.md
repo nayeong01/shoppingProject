@@ -20,3 +20,5 @@
 -register : 기본정보와 주문에 사용되는 주소(우편번호, 주소, 상세주소) 3가지로 나눠 등록 가능
 ```
 <img width="50%" src="https://user-images.githubusercontent.com/108383043/206975523-cc80249d-3e07-4a95-a785-7bbc3d6a7f59.png"/>
+```
+- 아이디 찾기 : 이름과 핸드폰번호를 입력하면 아이디 찾기 가능
