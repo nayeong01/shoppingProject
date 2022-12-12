@@ -80,4 +80,59 @@ review : 구입한 제품의 평점과 댓글 입력 가능 & 자신이 입력�
 <img width="50%" src="https://user-images.githubusercontent.com/108383043/206983519-5d25c207-ee65-4345-954e-a804892a8f6a.png"/>
 
 # 🌳화면구성 & 사용방법(관리자)
+```
+-admin page : 관리자페이지 home
+```
+<img width="50%" src="https://user-images.githubusercontent.com/108383043/206984666-03221619-c729-48d6-a5cb-8c741e8ce74a.png"/>
+<img width="50%" src="https://user-images.githubusercontent.com/108383043/206985823-c2d715b2-090f-43cc-a706-d2279c61dfd7.png"/>
 
+```
+-register product : 등록하고 싶은 제품 정보를 입력 후 등록 가능
+```
+<img width="50%" src="https://user-images.githubusercontent.com/108383043/206985272-7bed678b-e9c5-4191-a671-aaa24e4ce4d1.png"/>
+
+```
+-product list : 등록된 제품 목록 확인 및 검색 가능
+```
+<img width="50%" src="https://user-images.githubusercontent.com/108383043/206986409-4495672d-b33a-4dc7-8929-574e397a1638.png"/>
+
+```
+-product detail : 등록 제품 상세내용 확인 및 수정 및 삭제 가능
+```
+<img width="50%" src="https://user-images.githubusercontent.com/108383043/206987053-704c1674-51a6-47b0-bd3c-0749f7e741c4.png"/>
+
+```
+order list : 회원들의 주문 데이터 확인 및 주문 취소 가능
+```
+<img width="50%" src="https://user-images.githubusercontent.com/108383043/206987391-4e30f419-0525-4dcb-9875-738c0d2f8909.png"/>
+
+```
+member list : 가입회원 확인 및 정보 수정 가능
+```
+<img width="50%" src="https://user-images.githubusercontent.com/108383043/206987977-371ebc81-d62d-4ab9-aee0-71e9be7ceff6.png"/>
+<img width="50%" src="https://user-images.githubusercontent.com/108383043/206988197-225c3ed9-1983-4bc3-bac4-af12f0c35ca5.png"/>
+
+# 🌳개발 환경
+```
+- Spring framework
+- orcle
+- Back-end: java, orcle, mybatis, tomcat 
+- Front-end: JQuery, JavaScript, Ajax , html, css
+```
+# 🌳한계점 & 피드백
+```
+기존에 계획했던 Q&A 게시판, 공지 게시판을 구현하기에 시간이 부족해 만들지 못한 부분이 아쉬웠습니다.
+네이버 로그인이 모든 사용자 아이디로 사용이 되지 않는 부분이 아쉬웠습니다. 
+(현재 네이버 개발자 센터에서 사업자등록이 안 되어있어 승인이 나지 않아 미리 등록된 아이디만 사용이 가능한 상태입니다.)
+팀원과 처음 구상을 할 때 DB 이름을 정확하게 지정하여 시작해야 됨을 프로젝트를 진행하는 중에 인지하였습니다.
+제품 사진 등록시, web.xml에 경로를 지정하게 제작을 하였는데, local에선 잘 작동하지만 서버로 이동하니 상대경로로 지정해야함을 깨달았습니다.
+local에서뿐만아니라, 서버에서 작동되는 것을 미리 인지하여 제작해야한다는 것을 인지하였습니다.
+
+다음에 아이디어를 생각해 프로젝트를 구상할 땐 이번 피드백을 통해 초기부터 확실하게 구상 & 설계하여 더욱 완벽하게 개발을 완수해보고 싶습니다.
+
+```
+# 🌳작성자 정보
+```
+김나영
+olive_yeong@naver.com
+```
